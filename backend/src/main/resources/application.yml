@@ -1,0 +1,135 @@
+spring:
+  application:
+    name: duckherald-backend
+
+  # MongoDB 설정
+  # data:
+  # mongodb:
+  # uri: none
+  # uri: mongodb://localhost:27017/duckherald
+
+  # PostgreSQL 설정
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  # JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# 파일 업로드 설정
+servlet:
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB
+
+# 로깅 설정 (업데이트)
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.mail: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.crypto: TRACE
+    com.duckherald: DEBUG # 애플리케이션 패키지
+    com.duckherald.auth: DEBUG # 인증 관련 패키지
+    com.duckherald.config: DEBUG # 설정 관련 패키지
+    javax.mail: DEBUG
+    com.sun.mail: DEBUG
+
+server:
+  port: ${SERVER_PORT:8080}
+
+# 메일 설정 (spring 네임스페이스로 이동)
+mail:
+  host: smtp.gmail.com
+  port: 587
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
+        ssl:
+          trust: smtp.gmail.com
+      debug: true
+
+# Spring Batch 설정
+batch:
+  jdbc:
+    initialize-schema: always
+  job:
+    enabled: false # 애플리케이션 실행 시 자동으로 모든 배치 작업 실행 방지
+
+# Redis 설정
+data:
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+
+# 활성 프로필 설정
+profiles:
+  active: dev
+
+# Bean 정의 중복 허용
+main:
+  allow-bean-definition-overriding: true
+
+# 배치 작업 설정
+app:
+  batch:
+    enabled: false
+
+# 트랜잭션 매니저 설정
+transaction:
+  default-timeout: 30
+
+# 비동기 처리 설정
+task:
+  execution:
+    pool:
+      core-size: 5
+      max-size: 10
+      queue-capacity: 25
+
+# CORS 설정
+web:
+  cors:
+    allowed-origin-patterns: http://localhost:3000
+    allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+    allow-credentials: true
+
+# Cloudflare R2 설정 (수정)
+cloudflare:
+  r2:
+    access-key: ${CLOUDFLARE_R2_ACCESS_KEY
+    secret-key: ${CLOUDFLARE_R2_SECRET_KEY}
+    region: auto
+    bucket: ${CLOUDFLARE_R2_BUCKET}
+    endpoint: https://${CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com
+    custom-domain: ${CLOUDFLARE_R2_CUSTOM_DOMAIN}
+
+# Sentry 설정
+sentry:
+  dsn: ${SENTRY_DSN_BACKEND} # 실제 DSN은 환경 변수로 제공
+  environment: ${SPRING_PROFILES_ACTIVE}
+  traces-sample-rate: ${SENTRY_TRACES_SAMPLE_RATE}
+  logging:
+    minimum-event-level: warn # warn 이상의 로그 이벤트만 전송
+    minimum-breadcrumb-level: info # info 이상의 로그를 브레드크럼으로 기록
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  expiration: 86400000 # 24시간

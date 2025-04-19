@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 기본 패턴 정의 (날짜, 로그 레벨, 스레드, 로거 이름, 메시지) -->
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    
+    <!-- 콘솔 로깅 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    
+    <!-- 파일 로깅 설정 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/duckherald.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/duckherald-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    
+    <!-- Sentry 로깅 설정 -->
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender">
+        <!-- 로그 레벨에 따른 이벤트 필터링 (WARN 이상만 전송) -->
+        <minimumEventLevel>WARN</minimumEventLevel>
+        <!-- 브레드크럼 레벨 (INFO 이상) -->
+        <minimumBreadcrumbLevel>INFO</minimumBreadcrumbLevel>
+        
+        <!-- 오류 컨텍스트에 추가되는 정보 -->
+        <options>
+            <!-- 현재 환경명 -->
+            <environment>${SPRING_PROFILES_ACTIVE:-development}</environment>
+            <!-- 추가 컨텍스트 정보 -->
+            <tags>app:backend</tags>
+        </options>
+    </appender>
+    
+    <!-- SQL 로깅 설정 -->
+    <logger name="org.hibernate.SQL" level="INFO"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="INFO"/>
+    
+    <!-- Spring 프레임워크 로깅 -->
+    <logger name="org.springframework" level="INFO"/>
+    
+    <!-- DuckHerald 애플리케이션 로깅 -->
+    <logger name="com.duckherald" level="DEBUG"/>
+    
+    <!-- 루트 로거 설정 (기본 INFO 레벨) -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="SENTRY"/>
+    </root>
+    
+    <!-- 프로필별 로깅 설정 -->
+    <springProfile name="development">
+        <!-- 개발 환경에서는 더 자세한 로깅 -->
+        <logger name="com.duckherald" level="DEBUG"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+    </springProfile>
+    
+    <springProfile name="production">
+        <!-- 프로덕션 환경에서는 에러 로깅만 콘솔에 출력 -->
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="SENTRY"/>
+        </root>
+        <!-- 중요 컴포넌트는 WARN 이상만 로깅 -->
+        <logger name="org.springframework" level="WARN"/>
+    </springProfile>
+</configuration> 
