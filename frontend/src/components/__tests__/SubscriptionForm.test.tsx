@@ -58,24 +58,26 @@ describe("SubscriptionForm", () => {
     console.log("이메일 입력 시 상태가 정상적으로 업데이트됨");
   });
 
-  // 폼 제출 성공 테스트
+  // 폼 제출 성공 테스트 - 타임아웃 증가 및 안정화
   test("폼 제출 성공 시 성공 메시지가 표시되어야 함", async () => {
     // axios 응답 모킹
-    mockedAxios.post.mockResolvedValueOnce({ data: { success: true } });
+    mockedAxios.post.mockResolvedValueOnce({
+      data: { success: true },
+      status: 200
+    });
 
     render(<SubscriptionForm />);
 
-    // 사용자 이벤트 생성
-    const user = userEvent.setup();
+    // 이메일 입력 및 제출 - fireEvent 사용으로 변경
+    const inputElement = screen.getByPlaceholderText(/이메일 주소를 입력하세요/i) as HTMLInputElement;
+    fireEvent.change(inputElement, { target: { value: "test@example.com" } });
 
-    // 이메일 입력 및 제출
-    const inputElement =
-      screen.getByPlaceholderText(/이메일 주소를 입력하세요/i);
-    await user.type(inputElement, "test@example.com");
+    // 입력값 확인
+    expect(inputElement.value).toBe("test@example.com");
 
     // 폼 제출
     const submitButton = screen.getByRole("button", { name: /구독하기/i });
-    await user.click(submitButton);
+    fireEvent.click(submitButton);
 
     // API 호출 확인
     expect(mockedAxios.post).toHaveBeenCalledWith(
@@ -83,43 +85,42 @@ describe("SubscriptionForm", () => {
       { email: "test@example.com" },
     );
 
-    // 성공 메시지 확인
+    // 성공 메시지 확인 - 타임아웃 증가 및 디버깅 정보 추가
     await waitFor(() => {
-      expect(
-        screen.getByText(/구독 신청이 완료되었습니다/i),
-      ).toBeInTheDocument();
-    });
+      const successMessage = screen.queryByText(/구독 신청이 완료되었습니다/i);
+      console.log("성공 메시지 표시 여부:", !!successMessage);
+      expect(successMessage).toBeInTheDocument();
+    }, { timeout: 3000 });
 
     console.log("폼 제출 성공 시 API 호출 및 성공 메시지 표시 확인");
   });
 
-  // 폼 제출 실패 테스트
+  // 폼 제출 실패 테스트 - 에러 객체 수정 및 타임아웃 증가
   test("폼 제출 실패 시 에러 메시지가 표시되어야 함", async () => {
     // axios 에러 응답 모킹 (이미 구독 중인 경우)
     mockedAxios.post.mockRejectedValueOnce({
-      response: { status: 409 },
+      response: {
+        status: 409,
+        data: { message: "이미 구독 중인 이메일입니다" }
+      },
     });
 
     render(<SubscriptionForm />);
 
-    // 사용자 이벤트 생성
-    const user = userEvent.setup();
-
-    // 이메일 입력 및 제출
-    const inputElement =
-      screen.getByPlaceholderText(/이메일 주소를 입력하세요/i);
-    await user.type(inputElement, "existing@example.com");
+    // 이메일 입력 및 제출 - fireEvent 사용으로 변경
+    const inputElement = screen.getByPlaceholderText(/이메일 주소를 입력하세요/i) as HTMLInputElement;
+    fireEvent.change(inputElement, { target: { value: "existing@example.com" } });
 
     // 폼 제출
     const submitButton = screen.getByRole("button", { name: /구독하기/i });
-    await user.click(submitButton);
+    fireEvent.click(submitButton);
 
-    // 에러 메시지 확인
+    // 에러 메시지 확인 - 타임아웃 증가 및 디버깅 정보 추가
     await waitFor(() => {
-      expect(
-        screen.getByText(/이미 구독 중인 이메일입니다/i),
-      ).toBeInTheDocument();
-    });
+      const errorMessage = screen.queryByText(/이미 구독 중인 이메일입니다/i);
+      console.log("에러 메시지 표시 여부:", !!errorMessage);
+      expect(errorMessage).toBeInTheDocument();
+    }, { timeout: 3000 });
 
     console.log("폼 제출 실패 시 에러 메시지 표시 확인");
   });

@@ -22,9 +22,9 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
+          java-version: "17"
+          distribution: "temurin"
+          cache: "gradle"
 
       # 백엔드 빌드
       - name: Build with Gradle
@@ -59,8 +59,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
       # 의존성 설치
@@ -99,39 +99,39 @@ jobs:
           name: frontend-test-results
           path: frontend/coverage/
 
-  # 배포 단계 (main 브랜치에 푸시된 경우만 실행)
-  deploy:
-    needs: [backend, frontend]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+  # === 배포 단계는 현재 주석 처리 ===
+  # deploy:
+  #   needs: [backend, frontend]
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      # 배포를 위한 환경 변수 설정
-      - name: Setup deployment environment
-        run: |
-          echo "Setting up deployment environment..."
-          # 여기에 필요한 환경 변수나 설정 추가
+  #     # 배포를 위한 환경 변수 설정
+  #     - name: Setup deployment environment
+  #       run: |
+  #         echo "Setting up deployment environment..."
+  #         # 여기에 필요한 환경 변수나 설정 추가
 
-      # 백엔드 빌드 결과 다운로드
-      - name: Download backend build
-        uses: actions/download-artifact@v3
-        with:
-          name: backend-jar
-          path: ./deploy
+  #     # 백엔드 빌드 결과 다운로드
+  #     - name: Download backend build
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: backend-jar
+  #         path: ./deploy
 
-      # 프론트엔드 빌드 결과 다운로드
-      - name: Download frontend build
-        uses: actions/download-artifact@v3
-        with:
-          name: frontend-build
-          path: ./deploy/static
+  #     # 프론트엔드 빌드 결과 다운로드
+  #     - name: Download frontend build
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: frontend-build
+  #         path: ./deploy/static
 
-      # 배포 스크립트 실행 (예시)
-      - name: Deploy to server
-        run: |
-          echo "Deploying application to server..."
-          # 실제 배포 스크립트 또는 명령어를 여기에 추가
-          # 예: 서버에 SSH 연결 후 배포 스크립트 실행
-          # 또는 AWS, GCP 등의 클라우드 서비스 CLI 명령어 실행
+  #     # 배포 스크립트 실행 (예시)
+  #     - name: Deploy to server
+  #       run: |
+  #         echo "Deploying application to server..."
+  #         # 실제 배포 스크립트 또는 명령어를 여기에 추가
+  #         # 예: 서버에 SSH 연결 후 배포 스크립트 실행
+  #         # 또는 AWS, GCP 등의 클라우드 서비스 CLI 명령어 실행
