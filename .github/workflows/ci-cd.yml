@@ -42,7 +42,7 @@ jobs:
       # 테스트 결과 저장
       - name: Publish test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend-test-results
           path: backend/build/reports/tests/
@@ -94,7 +94,7 @@ jobs:
       # 테스트 결과 저장
       - name: Publish test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-test-results
           path: frontend/coverage/
