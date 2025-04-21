@@ -82,10 +82,16 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
 
     return (
         <Dialog open={isOpen}>
-            <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-800">
+            <DialogContent
+                className="sm:max-w-[425px] bg-white dark:bg-gray-800"
+                aria-describedby="login-dialog-description"
+            >
                 <DialogHeader>
                     <DialogTitle className="text-2xl">관리자 로그인</DialogTitle>
                 </DialogHeader>
+                <p id="login-dialog-description" className="sr-only">
+                    관리자 계정의 이메일과 비밀번호를 입력하여 로그인하세요.
+                </p>
                 <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                     {error && (
                         <Alert variant="destructive">

@@ -5,6 +5,7 @@
 // setupFilesAfterEnv: @testing-library/jest-dom의 매처(matcher) 확장 기능 추가
 
 const nextJest = require("next/jest");
+const path = require("path");
 
 const createJestConfig = nextJest({
   // Next.js 앱의 경로 지정
@@ -30,6 +31,30 @@ const customJestConfig = {
   transform: {
     "^.+\\.(ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
   },
+  // 테스트 결과 출력 형식 설정
+  verbose: true,
+  // 테스트 실행 시간 측정
+  testTimeout: 10000,
+  // 테스트 실행 전 콘솔 메시지 지우기
+  clearMocks: true,
+  // 테스트 파일 패턴 설정
+  testMatch: ["**/__tests__/**/*.test.[jt]s?(x)"],
+  // 테스트 실행 후 결과 저장 설정
+  reporters: [
+    "default",
+    [
+      "jest-junit",
+      {
+        outputDirectory: path.resolve(__dirname, "..", "_test_log", "frontend"),
+        outputName: `frontend-test-results-${new Date().toISOString().replace(/:/g, "-")}.xml`,
+        classNameTemplate: "{classname}",
+        titleTemplate: "{title}",
+        ancestorSeparator: " › ",
+      },
+    ],
+  ],
+  // 커버리지 리포트 저장 경로
+  coverageDirectory: path.resolve(__dirname, "..", "_test_log", "frontend", "coverage"),
 };
 
 // createJestConfig를 내보내 Next.js의 설정을 Jest에 적용

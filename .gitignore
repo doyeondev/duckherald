@@ -80,3 +80,5 @@ lib-cov/
 
 # 프로젝트 문서
 _docs/ 
+.cursor.md
+_test_log

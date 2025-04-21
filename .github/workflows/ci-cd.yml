@@ -116,14 +116,14 @@ jobs:
 
   #     # 백엔드 빌드 결과 다운로드
   #     - name: Download backend build
-  #       uses: actions/download-artifact@v3
+  #       uses: actions/download-artifact@v4
   #       with:
   #         name: backend-jar
   #         path: ./deploy
 
   #     # 프론트엔드 빌드 결과 다운로드
   #     - name: Download frontend build
-  #       uses: actions/download-artifact@v3
+  #       uses: actions/download-artifact@v4
   #       with:
   #         name: frontend-build
   #         path: ./deploy/static
