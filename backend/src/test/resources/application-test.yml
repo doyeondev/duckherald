@@ -89,9 +89,3 @@ web:
 # 테스트 프로필 활성화
 profiles:
   active: test
-
-# 테스트용 Sentry 설정
-sentry:
-  dsn: ${SENTRY_DSN_BACKEND:} # 빈 값으로 설정하여 기본값 제공
-  traces-sample-rate: 0.0 # 트레이싱 비활성화
-  enabled: false # Sentry 완전히 비활성화
