@@ -16,7 +16,7 @@ data class NewsletterResponse(
     val title: String,
     
     @Schema(description = "뉴스레터 본문 (HTML)", example = "<p>이번 달 소식을 전해드립니다.</p>")
-    val content: String,
+    val content: String?,
     
     @Schema(description = "뉴스레터 요약", example = "4월 소식 요약")
     val summary: String?,
@@ -42,7 +42,7 @@ data class NewsletterResponse(
             return NewsletterResponse(
                 id = entity.id,
                 title = entity.title,
-                content = entity.content,
+                content = entity.content ?: "",
                 summary = entity.summary,
                 thumbnail = entity.thumbnail,
                 status = entity.status,

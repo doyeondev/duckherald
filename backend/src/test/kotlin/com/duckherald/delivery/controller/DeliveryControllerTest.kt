@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.time.LocalDateTime
 import java.util.*
+import org.springframework.boot.test.context.SpringBootTest
 
 /**
  * DeliveryController 단위 테스트
@@ -46,7 +47,7 @@ import java.util.*
  * - WebMvcTest 설정 수정
  */
 @ExtendWith(SpringExtension::class)
-@WebMvcTest(controllers = [DeliveryController::class])
+@SpringBootTest
 @AutoConfigureMockMvc
 class DeliveryControllerTest {
 

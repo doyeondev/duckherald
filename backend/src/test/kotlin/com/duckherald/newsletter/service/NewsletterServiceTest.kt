@@ -13,6 +13,7 @@ import org.mockito.Mockito.*
 import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.test.assertNull
 
 /**
  * NewsletterService 단위 테스트
@@ -128,7 +129,7 @@ class NewsletterServiceTest {
         val newsletter = createSampleEntity()
         
         // Mock 동작 설정
-        `when`(newsletterRepository.findByIdOrNull(sampleId)).thenReturn(newsletter)
+        `when`(newsletterRepository.findById(sampleId)).thenReturn(Optional.of(newsletter))
         
         // When: 테스트 대상 메서드 호출
         val result = newsletterService.getNewsletterById(sampleId)
@@ -139,7 +140,7 @@ class NewsletterServiceTest {
         assertEquals(sampleContent, result.content)
         
         // 모의 객체 호출 검증
-        verify(newsletterRepository, times(1)).findByIdOrNull(sampleId)
+        verify(newsletterRepository, times(1)).findById(sampleId)
         
         println("ID로 뉴스레터 조회 테스트(성공) 완료")
     }
@@ -152,7 +153,7 @@ class NewsletterServiceTest {
         val invalidId = 999
         
         // Mock 동작 설정
-        `when`(newsletterRepository.findByIdOrNull(invalidId)).thenReturn(null)
+        `when`(newsletterRepository.findById(invalidId)).thenReturn(Optional.empty())
         
         // When & Then: 예외 발생 검증
         val exception = assertThrows<NoSuchElementException> {
@@ -163,7 +164,7 @@ class NewsletterServiceTest {
         assertTrue(exception.message!!.contains("Newsletter not found"))
         
         // 모의 객체 호출 검증
-        verify(newsletterRepository, times(1)).findByIdOrNull(invalidId)
+        verify(newsletterRepository, times(1)).findById(invalidId)
         
         println("ID로 뉴스레터 조회 테스트(실패) 완료")
     }
@@ -226,24 +227,29 @@ class NewsletterServiceTest {
     @DisplayName("뉴스레터 업데이트 테스트")
     fun updateNewsletter_WithValidData_ShouldUpdateAndReturnNewsletter() {
         // Given: 테스트 데이터 설정
-        val existingEntity = createSampleEntity()
-        val updatedTitle = "업데이트된 제목"
-        val request = createSampleRequest(title = updatedTitle)
-        val updatedEntity = existingEntity.copy(title = updatedTitle)
+        val existingNewsletter = createSampleEntity()
+        val request = createSampleRequest(title = "업데이트된 제목", content = "업데이트된 내용")
+        val updatedNewsletter = existingNewsletter.copy(
+            title = "업데이트된 제목",
+            content = "업데이트된 내용",
+            updatedAt = now
+        )
         
         // Mock 동작 설정
-        `when`(newsletterRepository.findByIdOrNull(sampleId)).thenReturn(existingEntity)
-        `when`(newsletterRepository.save(any(NewsletterEntity::class.java))).thenReturn(updatedEntity)
+        `when`(newsletterRepository.findById(sampleId)).thenReturn(Optional.of(existingNewsletter))
+        `when`(newsletterRepository.save(any(NewsletterEntity::class.java))).thenReturn(updatedNewsletter)
         
         // When: 테스트 대상 메서드 호출
         val result = newsletterService.updateNewsletter(sampleId, request)
         
         // Then: 결과 검증
         assertEquals(sampleId, result.id)
-        assertEquals(updatedTitle, result.title)
+        assertEquals("업데이트된 제목", result.title)
+        assertEquals("업데이트된 내용", result.content)
+        assertNotNull(result.updatedAt)
         
         // 모의 객체 호출 검증
-        verify(newsletterRepository, times(1)).findByIdOrNull(sampleId)
+        verify(newsletterRepository, times(1)).findById(sampleId)
         verify(newsletterRepository, times(1)).save(any(NewsletterEntity::class.java))
         
         println("뉴스레터 업데이트 테스트 완료")
@@ -257,42 +263,40 @@ class NewsletterServiceTest {
     fun updateNewsletter_WithOptionalFields_ShouldUpdateAllFields() {
         // Given: 테스트 데이터 설정
         val existingNewsletter = createSampleEntity()
-        val updatedSummary = "업데이트된 요약"
-        val updatedThumbnail = "http://example.com/updated-image.jpg"
-        
-        val updateRequest = createSampleRequest(
-            title = "업데이트된 제목",
-            content = "업데이트된 내용",
-            summary = updatedSummary,
-            thumbnail = updatedThumbnail
+        val updatedNewsletter = existingNewsletter.copy(
+            title = "새 제목",
+            content = "새 내용",
+            summary = "새 요약",
+            thumbnail = "새 썸네일 URL",
+            updatedAt = now
         )
         
-        val updatedEntity = existingNewsletter.copy(
-            title = "업데이트된 제목",
-            content = "업데이트된 내용",
-            summary = updatedSummary,
-            thumbnail = updatedThumbnail
+        // 요청 객체 - 모든 필드 포함
+        val request = NewsletterRequest(
+            title = "새 제목",
+            content = "새 내용",
+            summary = "새 요약",
+            thumbnail = "새 썸네일 URL"
         )
         
         // Mock 동작 설정
-        `when`(newsletterRepository.findByIdOrNull(sampleId)).thenReturn(existingNewsletter)
-        `when`(newsletterRepository.save(any(NewsletterEntity::class.java))).thenReturn(updatedEntity)
+        `when`(newsletterRepository.findById(sampleId)).thenReturn(Optional.of(existingNewsletter))
+        `when`(newsletterRepository.save(any(NewsletterEntity::class.java))).thenReturn(updatedNewsletter)
         
         // When: 테스트 대상 메서드 호출
-        val result = newsletterService.updateNewsletter(sampleId, updateRequest)
+        val result = newsletterService.updateNewsletter(sampleId, request)
         
         // Then: 결과 검증
-        assertEquals(sampleId, result.id)
-        assertEquals("업데이트된 제목", result.title)
-        assertEquals("업데이트된 내용", result.content)
-        assertEquals(updatedSummary, result.summary)
-        assertEquals(updatedThumbnail, result.thumbnail)
+        assertEquals("새 제목", result.title)
+        assertEquals("새 내용", result.content)
+        assertEquals("새 요약", result.summary)
+        assertEquals("새 썸네일 URL", result.thumbnail)
         
         // 모의 객체 호출 검증
-        verify(newsletterRepository, times(1)).findByIdOrNull(sampleId)
+        verify(newsletterRepository, times(1)).findById(sampleId)
         verify(newsletterRepository, times(1)).save(any(NewsletterEntity::class.java))
         
-        println("뉴스레터 업데이트 테스트(Nullable 필드 포함) 완료")
+        println("뉴스레터 업데이트 테스트 (Nullable 필드 포함) 완료")
     }
     
     /**
@@ -302,41 +306,45 @@ class NewsletterServiceTest {
     @DisplayName("뉴스레터 업데이트 테스트 - Null 값 처리")
     fun updateNewsletter_WithNullValues_ShouldHandleNullsProperly() {
         // Given: 테스트 데이터 설정
-        val existingNewsletter = createSampleEntity()
+        val existingNewsletter = createSampleEntity(
+            summary = "기존 요약",
+            thumbnail = "기존 썸네일"
+        )
         
-        val updateRequest = createSampleRequest(
-            title = "업데이트된 제목",
-            content = "업데이트된 내용",
+        // Null 값을 포함한 요청 객체
+        val request = NewsletterRequest(
+            title = "새 제목",
+            content = "새 내용",
             summary = null,
             thumbnail = null
         )
         
-        val updatedEntity = existingNewsletter.copy(
-            title = "업데이트된 제목",
-            content = "업데이트된 내용",
-            summary = null,
-            thumbnail = null
+        val updatedNewsletter = existingNewsletter.copy(
+            title = "새 제목",
+            content = "새 내용",
+            summary = null,  // 명시적으로 null로 업데이트
+            thumbnail = null, // 명시적으로 null로 업데이트
+            updatedAt = now
         )
         
         // Mock 동작 설정
-        `when`(newsletterRepository.findByIdOrNull(sampleId)).thenReturn(existingNewsletter)
-        `when`(newsletterRepository.save(any(NewsletterEntity::class.java))).thenReturn(updatedEntity)
+        `when`(newsletterRepository.findById(sampleId)).thenReturn(Optional.of(existingNewsletter))
+        `when`(newsletterRepository.save(any(NewsletterEntity::class.java))).thenReturn(updatedNewsletter)
         
         // When: 테스트 대상 메서드 호출
-        val result = newsletterService.updateNewsletter(sampleId, updateRequest)
+        val result = newsletterService.updateNewsletter(sampleId, request)
         
         // Then: 결과 검증
-        assertEquals(sampleId, result.id)
-        assertEquals("업데이트된 제목", result.title)
-        assertEquals("업데이트된 내용", result.content)
+        assertEquals("새 제목", result.title)
+        assertEquals("새 내용", result.content)
         assertNull(result.summary)
         assertNull(result.thumbnail)
         
         // 모의 객체 호출 검증
-        verify(newsletterRepository, times(1)).findByIdOrNull(sampleId)
+        verify(newsletterRepository, times(1)).findById(sampleId)
         verify(newsletterRepository, times(1)).save(any(NewsletterEntity::class.java))
         
-        println("뉴스레터 업데이트 테스트(Null 값 처리) 완료")
+        println("뉴스레터 업데이트 테스트 (Null 값 처리) 완료")
     }
     
     // 뉴스레터 삭제 테스트
@@ -392,7 +400,7 @@ class NewsletterServiceTest {
         )
         
         // Mock 동작 설정
-        `when`(newsletterRepository.findByIdOrNull(sampleId)).thenReturn(draftNewsletter)
+        `when`(newsletterRepository.findById(sampleId)).thenReturn(Optional.of(draftNewsletter))
         `when`(newsletterRepository.save(any(NewsletterEntity::class.java))).thenReturn(publishedNewsletter)
         
         // When: 테스트 대상 메서드 호출
@@ -404,7 +412,7 @@ class NewsletterServiceTest {
         assertNotNull(result.publishedAt)
         
         // 모의 객체 호출 검증
-        verify(newsletterRepository, times(1)).findByIdOrNull(sampleId)
+        verify(newsletterRepository, times(1)).findById(sampleId)
         verify(newsletterRepository, times(1)).save(any(NewsletterEntity::class.java))
         
         println("뉴스레터 발행 테스트 완료")

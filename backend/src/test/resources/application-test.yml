@@ -1,0 +1,91 @@
+spring:
+  application:
+    name: duckherald-backend-test
+
+  # 테스트용 H2 인메모리 DB 설정
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  # JPA 테스트 설정
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+        # 테스트 데이터 자동 로드 설정
+        hbm2ddl:
+          import_files: import-test.sql
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  # 테스트 환경에서는 Redis 비활성화
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      # 테스트용 임베디드 레디스 사용
+
+  # 테스트 이메일 설정 - 실제 발송하지 않음
+  mail:
+    host: localhost
+    port: 3025
+    username: test@example.com
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+          ssl:
+            trust: localhost
+
+# 테스트 시 로깅 설정
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    com.duckherald: DEBUG
+    org.springframework.test: DEBUG
+
+# 서버 포트 설정 (테스트 시 랜덤 포트 사용)
+server:
+  port: 0
+
+# 테스트 JWT 설정
+jwt:
+  secret: test-jwt-secret-key-for-duckherald-testing-environments-2025
+  expiration: 86400000 # 24시간
+
+# 테스트용 Cloudflare R2 설정
+cloudflare:
+  r2:
+    access-key: test-access-key
+    secret-key: test-secret-key
+    region: auto
+    bucket: test-bucket
+    endpoint: https://test-account.r2.cloudflarestorage.com
+    custom-domain: https://test-r2.example.com
+
+# 테스트용 배치 설정
+batch:
+  job:
+    enabled: false
+  jdbc:
+    initialize-schema: embedded
+
+# CORS 테스트 설정
+web:
+  cors:
+    allowed-origin-patterns: http://localhost:3000
+    allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+    allow-credentials: true
+
+# 테스트 프로필 활성화
+profiles:
+  active: test

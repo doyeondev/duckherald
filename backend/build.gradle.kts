@@ -37,6 +37,7 @@ dependencies {
     
     // Spring Security
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     
     // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
@@ -106,6 +107,9 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.3.1")
     testImplementation("org.mockito:mockito-junit-jupiter:5.3.1")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
+    
+    // Spring Security Test 의존성 추가
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 // JPA Entity 클래스에 자동으로 기본 생성자 삽입

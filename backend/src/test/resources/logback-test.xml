@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 콘솔 로그 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{36}) - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 테스트용 로그 파일 설정 -->
+    <appender name="TEST_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/test.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 테스트 실행 로그 파일 -->
+    <appender name="TEST_EXECUTION_LOG" class="ch.qos.logback.core.FileAppender">
+        <file>logs/test-execution.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- Hibernate SQL 로그 설정 -->
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TEST_LOG_FILE" />
+    </logger>
+
+    <!-- Hibernate 바인딩 파라미터 로그 설정 -->
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TEST_LOG_FILE" />
+    </logger>
+
+    <!-- 스프링 테스트 로그 설정 -->
+    <logger name="org.springframework.test" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TEST_EXECUTION_LOG" />
+    </logger>
+
+    <!-- DuckHerald 애플리케이션 로그 설정 -->
+    <logger name="com.duckherald" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TEST_LOG_FILE" />
+        <appender-ref ref="TEST_EXECUTION_LOG" />
+    </logger>
+
+    <!-- 테스트 실행 결과 로그 설정 -->
+    <logger name="org.junit" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TEST_EXECUTION_LOG" />
+    </logger>
+
+    <!-- 루트 로거 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TEST_LOG_FILE" />
+    </root>
+</configuration> 

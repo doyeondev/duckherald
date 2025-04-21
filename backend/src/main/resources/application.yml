@@ -81,7 +81,7 @@ data:
 
 # 활성 프로필 설정
 profiles:
-  active: dev
+  active: ${SPRING_PROFILES_ACTIVE:dev}
 
 # Bean 정의 중복 허용
 main:
@@ -114,7 +114,7 @@ web:
 # Cloudflare R2 설정 (수정)
 cloudflare:
   r2:
-    access-key: ${CLOUDFLARE_R2_ACCESS_KEY
+    access-key: ${CLOUDFLARE_R2_ACCESS_KEY}
     secret-key: ${CLOUDFLARE_R2_SECRET_KEY}
     region: auto
     bucket: ${CLOUDFLARE_R2_BUCKET}
