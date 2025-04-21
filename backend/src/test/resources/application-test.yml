@@ -89,3 +89,6 @@ web:
 # 테스트 프로필 활성화
 profiles:
   active: test
+
+sentry:
+  dsn: ${SENTRY_DSN_BACKEND:}
