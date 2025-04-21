@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { type ThemeProviderProps } from "next-themes/dist/types";
+
+// 간단한 타입 정의
+interface ThemeProviderProps {
+  children: React.ReactNode;
+  [key: string]: any;
+}
 
 /**
  * 테마 프로바이더 컴포넌트

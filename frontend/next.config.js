@@ -25,16 +25,7 @@ const nextConfig = {
     ];
   },
 
-  // Sentry 관련 Next.js 설정
-  sentry: {
-    // 웹팩 플러그인 비활성화 (필요시 활성화)
-    disableServerWebpackPlugin: false,
-    disableClientWebpackPlugin: false,
-    // 소스맵 업로드
-    hideSourceMaps: false,
-    // 오류 페이지
-    tunnelRoute: "/monitoring-tunnel",
-  },
+  // 'sentry' 키는 Next.js에서 직접 지원하지 않음 - 제거
   /* config options here */
 };
 
@@ -55,7 +46,9 @@ const sentryWebpackPluginOptions = {
   debug: false,
 };
 
-// Sentry 설정 적용
-module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN_FRONTEND
-  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
-  : nextConfig;
+// Sentry 설정 적용 - 테스트 환경에서는 건너뛰기
+module.exports =
+  // 테스트 모드이거나 Sentry DSN이 없으면 Sentry 설정을 적용하지 않음
+  process.env.NODE_ENV === "test" || !process.env.NEXT_PUBLIC_SENTRY_DSN_FRONTEND
+    ? nextConfig
+    : withSentryConfig(nextConfig, sentryWebpackPluginOptions);

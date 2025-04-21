@@ -106,6 +106,7 @@ dependencies {
     }
     testImplementation("org.mockito:mockito-core:5.3.1")
     testImplementation("org.mockito:mockito-junit-jupiter:5.3.1")
+    testImplementation("org.mockito:mockito-inline:4.11.0")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
     
     // Spring Security Test 의존성 추가

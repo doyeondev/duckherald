@@ -30,12 +30,12 @@ export default function TeamPage() {
                 className="w-48 h-48 object-cover rounded-full mb-4"
               />
               <h2 className="text-2xl font-bold">
-                Jaehoon Sung | “Jaethoven” | Creatives & Writing
+                Jaehoon Sung | &quot;Jaethoven&quot; | Creatives & Writing
               </h2>
             </div>
             <p className="text-lg">
-              Jaehoon, affectionately known as "Jaethoven", is the creative
-              genius behind Duck Herald. While Jaehoon's days are spent working
+              Jaehoon, affectionately known as &quot;Jaethoven&quot;, is the creative
+              genius behind Duck Herald. While Jaehoon&apos;s days are spent working
               as a software engineer in Canada, his true passion lies in the
               mesmerizing melodies of Korean pop music from the 1970s and 80s.
               With a deep love for this era, Jaehoon brings a unique perspective
@@ -55,7 +55,7 @@ export default function TeamPage() {
                 className="w-48 h-48 object-cover rounded-full mb-4"
               />
               <h2 className="text-2xl font-bold">
-                So Yoon Lee | “Doctor of Kpop” | Creatives & Writing
+                So Yoon Lee | &quot;Doctor of Kpop&quot; | Creatives & Writing
               </h2>
             </div>
             <p className="text-lg">
@@ -64,8 +64,8 @@ export default function TeamPage() {
               aims to examine the roles of various individuals and organizations
               in K-pop production, thereby providing an empirically-grounded and
               nuanced understanding of the industry. She also serves as a Ph.D
-              Research Associate for the project “Mapping Global Impacts of
-              Hallyu”, an interdisciplinary research effort that brings together
+              Research Associate for the project &quot;Mapping Global Impacts of
+              Hallyu&quot;, an interdisciplinary research effort that brings together
               leading scholars in Hallyu studies around the world. So Yoon is
               indeed well on her way to earning the title of Doctor of Kpop, as
               she continues to contribute to the field with her groundbreaking
@@ -82,14 +82,14 @@ export default function TeamPage() {
                 className="w-48 h-48 object-cover rounded-full mb-4"
               />
               <h2 className="text-2xl font-bold">
-                Sean Kim | "Cultural Nomad" | Service Operation
+                Sean Kim | &quot;Cultural Nomad&quot; | Service Operation
               </h2>
             </div>
             <p className="text-lg">
               Sean leads Service Operations. By day, he serves as a sales
               representative at a law firm in Seoul. He is an avid traveler who
               frequently explores Korea and Japan. Somewhat fluent in Chinese
-              and Japanese, Sean's linguistic prowess adds depth to his cultural
+              and Japanese, Sean&apos;s linguistic prowess adds depth to his cultural
               perspectives, enriching his interactions and insights. With his
               meticulous attention to detail and service-oriented approach, Sean
               plays a pivotal role in ensuring that Duck Herald delivers
@@ -106,7 +106,7 @@ export default function TeamPage() {
                 className="w-48 h-48 object-cover rounded-full mb-4"
               />
               <h2 className="text-2xl font-bold">
-                Woonseong Seo | "Neo" | Marketing & Sales
+                Woonseong Seo | &quot;Neo&quot; | Marketing & Sales
               </h2>
             </div>
             <p className="text-lg">

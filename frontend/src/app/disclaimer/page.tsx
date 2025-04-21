@@ -15,7 +15,7 @@ export default function DisclaimerPage() {
 
           <div className="space-y-8 prose max-w-none">
             <p>
-              It's crucial to emphasize that our service operates with full
+              It&apos;s crucial to emphasize that our service operates with full
               respect for copyright laws. We acknowledge and mark all copyright
               sources appropriately, ensuring due credit is given to creators
               and copyright holders. Our intention is to provide informative and
@@ -47,7 +47,7 @@ export default function DisclaimerPage() {
 
             <p>
               Should you have any concerns regarding copyright issues, content
-              accuracy, or any other inquiries, please don't hesitate to contact
+              accuracy, or any other inquiries, please don&apos;t hesitate to contact
               us. Your feedback is valuable as we continually strive to improve
               our service and deliver content that enriches your experience with
               Kpop and beyond.

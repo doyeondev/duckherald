@@ -18,14 +18,14 @@ export default function AboutPage() {
           <div className="space-y-8 prose max-w-none">
             <p>
               Welcome to Duck Herald, your gateway to Kpop and Korean culture
-              that goes beyond the surface. We're more than just a newsletter
-              service - we're your guides on a journey to uncover the essence of
+              that goes beyond the surface. We&apos;re more than just a newsletter
+              service - we&apos;re your guides on a journey to uncover the essence of
               Kpop and its rich cultural tapestry.
             </p>
 
             <p>
               Here at Duck Herald, we firmly believe that your experience in the
-              Kpop world transcends mere music. It's about delving into the
+              Kpop world transcends mere music. It&apos;s about delving into the
               intricacies of Korean culture, language, and tradition that make
               this genre so unique and captivating. With this belief at our
               core, a passionate trio of Korean natives has come together with a
@@ -44,7 +44,7 @@ export default function AboutPage() {
             <p>
               What sets Duck Herald apart is our commitment to diversity and
               depth. We explore a wide array of topics, from language tips to
-              pop culture history, ensuring that there's something for everyone
+              pop culture history, ensuring that there&apos;s something for everyone
               in our vibrant community. With each newsletter, we aim to spark
               curiosity, ignite passion, and foster a deeper connection to the
               world of Korean culture.
@@ -54,7 +54,7 @@ export default function AboutPage() {
               Join us on this exhilarating journey as we navigate the colorful
               landscape of Kpop and beyond. Let Duck Herald be your trusted
               companion as you uncover the hidden gems and cultural treasures
-              that await. Together, let's embark on a voyage of discovery and
+              that await. Together, let&apos;s embark on a voyage of discovery and
               enrichment.
             </p>
 

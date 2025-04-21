@@ -237,7 +237,7 @@ const CreateNewsletter = () => {
       }
     };
     input.click();
-  }, [editor]);
+  }, [editor, uploadBodyImage]);
 
   // 링크 삽입 핸들러
   const insertLink = useCallback(() => {

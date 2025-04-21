@@ -84,7 +84,7 @@ const NewslettersPage = () => {
 
   useEffect(() => {
     fetchNewsletters();
-  }, []);
+  }, [fetchNewsletters]);
 
   // 필터 적용 함수
   const applyFilters = (

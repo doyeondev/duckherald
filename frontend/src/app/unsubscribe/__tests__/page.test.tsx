@@ -19,11 +19,13 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 // next/link 모킹
 jest.mock("next/link", () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => (
+  const MockedLink = ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href} data-testid="link">
       {children}
     </a>
   );
+  MockedLink.displayName = "MockedLink";
+  return MockedLink;
 });
 
 describe("UnsubscribePage", () => {
