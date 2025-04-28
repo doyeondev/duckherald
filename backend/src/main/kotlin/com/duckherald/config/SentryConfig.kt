@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory
 import java.util.concurrent.Executor
 import org.springframework.core.task.TaskDecorator
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import org.springframework.stereotype.Component;
 
 /**
  * Sentry 설정 클래스
@@ -34,6 +35,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
  * 백엔드 애플리케이션의 오류 모니터링 및 추적을 위한 Sentry 설정을 담당합니다.
  * 개발 및 프로덕션 환경에 따라 다르게 구성됩니다.
  */
+@Profile("!test")
 @Configuration
 class SentryConfig {
 
