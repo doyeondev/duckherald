@@ -13,7 +13,9 @@ jobs:
   # 백엔드 빌드 및 테스트
   backend:
     runs-on: ubuntu-latest
-
+    env:
+      SENTRY_DSN_BACKEND: "dummy"
+      SPRING_PROFILES_ACTIVE: "test" # 테스트 환경 강제 세팅
     steps:
       # 소스코드 체크아웃
       - uses: actions/checkout@v3

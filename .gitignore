@@ -82,3 +82,6 @@ lib-cov/
 _docs/ 
 .cursor.md
 _test_log
+
+# 테스트 로그 파일
+test_log.txt
