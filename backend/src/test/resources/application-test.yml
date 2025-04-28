@@ -86,9 +86,13 @@ web:
     allowed-methods: GET, POST, PUT, DELETE, OPTIONS
     allow-credentials: true
 
-# 테스트 프로필 활성화
-profiles:
-  active: test
-
+# Sentry 비활성화 설정 (src/main에서 병합)
 sentry:
-  dsn: ${SENTRY_DSN_BACKEND:}
+  dsn: ""
+  enabled: false
+  traces-sample-rate: 0.0
+
+# 추가 이메일 서비스 설정 (src/main에서 병합)
+mail:
+  smtp:
+    test-mode: true
